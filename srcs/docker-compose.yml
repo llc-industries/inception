@@ -1,0 +1,20 @@
+services:
+  wordpress:
+    image: wordpress
+    build: requirements/wordpress
+    restart: unless-stopped
+
+  nginx:
+    image: nginx
+    build: requirements/nginx
+    restart: unless-stopped
+
+  mariadb:
+    image: mariadb
+    build: requirements/mariadb
+    restart: unless-stopped
+
+volumes:
+
+networks:
+
