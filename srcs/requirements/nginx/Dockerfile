@@ -8,7 +8,5 @@ RUN apk update && apk upgrade && apk add --no-cache nginx openssl && mkdir -p /e
 
 COPY /conf/nginx.conf /etc/nginx/http.d/default.conf
 
-EXPOSE 443
-
 ENTRYPOINT ["/usr/sbin/nginx"]
 CMD ["-g", "daemon off;"]

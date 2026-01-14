@@ -2,16 +2,32 @@ services:
   wordpress:
     image: wordpress
     build: requirements/wordpress
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
+    networks:
+      - inception
     restart: unless-stopped
 
   nginx:
     image: nginx
     build: requirements/nginx
+    depends_on:
+      - wordpress
+    env_file:
+      - .env
+    networks:
+      - inception
     restart: unless-stopped
 
   mariadb:
     image: mariadb
     build: requirements/mariadb
+    env_file:
+      - .env
+    networks:
+      - inception
     restart: unless-stopped
 
 volumes:
