@@ -8,6 +8,8 @@ services:
       - .env
     networks:
       - inception
+    volumes:
+      - wp_data:/var/www/wordpress
     restart: unless-stopped
 
   nginx:
@@ -19,6 +21,10 @@ services:
       - .env
     networks:
       - inception
+    ports:
+      - "443:443"
+    volumes:
+      - wp_data:/var/www/wordpress
     restart: unless-stopped
 
   mariadb:
@@ -28,9 +34,25 @@ services:
       - .env
     networks:
       - inception
+    volumes:
+      - db_data:/var/lib/mysql
     restart: unless-stopped
 
 volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/lle-cout/data/mariaDB
+
+  wp_data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/lle-cout/data/wordpress
 
 networks:
-
+  inception:
+    driver: bridge
