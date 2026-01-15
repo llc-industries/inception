@@ -29,6 +29,7 @@ echo -e "--- MariaDB variables ---"
 add_var "database name" MYSQL_DATABASE
 add_var "database user name" MYSQL_USER
 add_var "database user password" MYSQL_PASSWORD
+add_var "database root password" MYSQL_ROOT_PASSWORD
 
 echo -e "\n--- Wordpress admin variables ---"
 add_var "domain name" DOMAIN_NAME
