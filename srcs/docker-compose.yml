@@ -44,7 +44,7 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: /home/lle-cout/data/mariaDB
+      device: /home/lle-cout/data/mariadb
 
   wp_data:
     driver: local

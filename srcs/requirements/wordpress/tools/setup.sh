@@ -1,5 +1,9 @@
 #!/bin/sh
 
+while ! /usr/bin/mariadb-admin ping -h"mariadb" -u"${MYSQL_USER}" -p"${MYSQL_PASSWORD}" --silent; do # Tant que la connexion à la base de données échoue, la boucle continue
+	sleep 1
+done
+
 if [ ! -f wp-config.php ]; then
 	wp core download --allow-root
 fi

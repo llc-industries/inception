@@ -1,18 +1,26 @@
 #!/bin/sh
 
-if [ ! -d "/var/lib/mysql/mysql" ]; then
-    mariadb-install-db --user=mysql --datadir=/var/lib/mysql > /dev/null
+DATADIR="/var/lib/mysql"
 
-    cat << EOF > /tmp/init.sql
-CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;
-CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
-GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';
-FLUSH PRIVILEGES;
-EOF
+if [ ! -d "$DATADIR/mysql" ]; then
+    mariadb-install-db --user=mysql --datadir=$DATADIR
 
-    /usr/bin/mariadbd --user=mysql --bootstrap < /tmp/init.sql
+    /usr/bin/mariadbd --user=mysql --datadir=$DATADIR &
+    PID=$!
 
-    rm -f /tmp/init.sql
+    until mariadb-admin ping >/dev/null 2>&1; do
+        sleep 1
+    done
+
+    mariadb -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"
+    mariadb -e "CREATE USER IF NOT EXISTS \`${MYSQL_USER}\`@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+    mariadb -e "GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO \`${MYSQL_USER}\`@'%';"
+
+    mariadb -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';"
+    mariadb -p"${MYSQL_ROOT_PASSWORD}" -e "FLUSH PRIVILEGES;"
+
+    kill $PID
+    wait $PID
 fi
 
-exec /usr/bin/mariadbd --user=mysql --console
+exec /usr/bin/mariadbd --user=mysql --datadir=$DATADIR
