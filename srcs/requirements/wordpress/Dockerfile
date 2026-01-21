@@ -1,6 +1,7 @@
 FROM alpine:3.22
 
 RUN apk update && apk upgrade && apk add --no-cache mariadb-client curl php php-fpm php-phar php-mysqli php-mbstring \
+	php-curl php-gd php-intl php-openssl php-xml php-zip php-iconv php-session php-dom php-fileinfo php-json \
 	&& curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
 	&& chmod +x wp-cli.phar \
 	&& mkdir -p /usr/local/bin \
