@@ -1,30 +1,43 @@
+COMPOSE_FILE = ./srcs/docker-compose.yml
+COMPOSE = docker compose -f $(COMPOSE_FILE)
+DATA_DIR = /home/lle-cout/data
+ENV_FILE = ./srcs/.env
+ENV_SCRIPT = ./srcs/requirements/tools/set_env.sh
 
 default: all
 
-all: env
-	@mkdir -p /home/lle-cout/data/wordpress
-	@mkdir -p /home/lle-cout/data/mariadb
-	docker compose -f srcs/docker-compose.yml up --build -d
+# Basic rules
 
-clean: down
+all: env
+	@mkdir -p $(DATA_DIR)/wordpress
+	@mkdir -p $(DATA_DIR)/mariadb
+	$(COMPOSE) up --build -d
+	@echo "Inception is up"
+
+clean:
+	$(COMPOSE) down --rmi all --volumes
+	@echo "Containers are down, volumes and network cleaned"
 
 fclean: clean
-	@rm -rf /home/lle-cout/inception/srcs/.env
-	@sudo rm -rf /home/lle-cout/data/wordpress
-	@sudo rm -rf /home/lle-cout/data/mariadb
-	docker rm -vf $(docker ps -aq)
-	docker rmi -f $(docker images -aq)
+	@rm -rf $(ENV_FILE)
+	@sudo rm -rf $(DATA_DIR)/wordpress
+	@sudo rm -rf $(DATA_DIR)/mariadb
+	@echo "Persistent storage and .env deleted"
 
 re: fclean all
 
-up: env
-	docker compose -f srcs/docker-compose.yml up --build -d
+# Up / Down / Env
+
+up:
+	$(COMPOSE) up -d
+	@echo "Containers are up"
 
 down:
-	docker compose -f srcs/docker-compose.yml down
+	$(COMPOSE) down
+	@echo "Containers are down"
 
 env:
-	/home/lle-cout/inception/srcs/requirements/tools/set_env.sh
-
+	@echo "Calling .env script..."
+	@bash $(ENV_SCRIPT)
 
 .PHONY: all clean fclean re up down env
