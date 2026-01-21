@@ -1,5 +1,6 @@
 FROM alpine:3.22
 
+# Make necessary directory for mariadb with right owner
 RUN apk update && apk upgrade && apk add --no-cache mariadb mariadb-client \
 	&& mkdir -p /run/mysqld \
     && chown -R mysql:mysql /run/mysqld \

@@ -2,7 +2,9 @@
 
 ENV_FILE='/home/lle-cout/inception/srcs/.env'
 
+# If .env exist
 if [ -f "$ENV_FILE" ]; then
+# If it exist
 	if [ -s "$ENV_FILE" ]; then
 		read -p "Pre-existing .env file found. Do you wish to overwrite ? [Y/n] " answer
 
