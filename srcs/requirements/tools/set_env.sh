@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 ENV_FILE='/home/lle-cout/inception/srcs/.env'
 
 # If .env exist
