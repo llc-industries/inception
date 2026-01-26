@@ -1,4 +1,5 @@
 services:
+# WORDPRESS + PHP
   wordpress:
     image: wordpress
     build: requirements/wordpress
@@ -13,6 +14,7 @@ services:
     restart: unless-stopped
 
   nginx:
+# NGINX
     image: nginx
     build: requirements/nginx
     depends_on:
@@ -28,6 +30,7 @@ services:
     restart: unless-stopped
 
   mariadb:
+# MARIADB
     image: mariadb
     build: requirements/mariadb
     env_file:
@@ -36,6 +39,14 @@ services:
       - inception
     volumes:
       - db_data:/var/lib/mysql
+    restart: unless-stopped
+
+  adminer:
+# ADMINER
+    image: adminer
+    build: requirements/bonus/adminer
+    networks:
+      - inception
     restart: unless-stopped
 
 volumes:

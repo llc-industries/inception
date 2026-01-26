@@ -10,6 +10,7 @@ default: all
 
 all: env
 	@mkdir -p $(DATA_DIR)/wordpress
+	@mkdir -p $(DATA_DIR)/adminer
 	@mkdir -p $(DATA_DIR)/mariadb
 	$(COMPOSE) up --build -d
 	@echo "Inception is up"
@@ -21,6 +22,7 @@ clean:
 fclean: clean
 	@rm -rf $(ENV_FILE)
 	@sudo rm -rf $(DATA_DIR)/wordpress
+	@sudo rm -rf $(DATA_DIR)/adminer
 	@sudo rm -rf $(DATA_DIR)/mariadb
 	@echo "Persistent storage and .env deleted"
 
