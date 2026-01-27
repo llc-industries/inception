@@ -36,7 +36,7 @@ add_var "database user password" MYSQL_PASSWORD
 add_var "database root password" MYSQL_ROOT_PASSWORD
 
 echo -e "\n--- Wordpress admin variables ---"
-add_var "domain name" DOMAIN_NAME
+echo "DOMAIN_NAME=lle-cout.42.fr" >> "$ENV_FILE"
 add_var "Wordpress admin username" WP_ADMIN_USER
 add_var "Wordpress admin password" WP_ADMIN_PASSWORD
 add_var "Wordpress admin mail" WP_ADMIN_MAIL

@@ -1,3 +1,5 @@
+# ---- CONTAINERS ---- #
+
 services:
 # WORDPRESS + PHP
   wordpress:
@@ -13,8 +15,8 @@ services:
       - wp_data:/var/www/wordpress
     restart: unless-stopped
 
-  nginx:
 # NGINX
+  nginx:
     image: nginx
     build: requirements/nginx
     depends_on:
@@ -29,8 +31,8 @@ services:
       - wp_data:/var/www/wordpress
     restart: unless-stopped
 
-  mariadb:
 # MARIADB
+  mariadb:
     image: mariadb
     build: requirements/mariadb
     env_file:
@@ -41,13 +43,26 @@ services:
       - db_data:/var/lib/mysql
     restart: unless-stopped
 
+# ADMINER + PHP
   adminer:
-# ADMINER
     image: adminer
     build: requirements/bonus/adminer
     networks:
       - inception
     restart: unless-stopped
+
+# PORTAINER
+  portainer:
+    image: portainer
+    build: requirements/bonus/portainer
+    networks:
+      - inception
+    volumes:
+      - portainer_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+# ---- VOLUMES ---- #
 
 volumes:
   db_data:
@@ -63,6 +78,15 @@ volumes:
       o: bind
       type: none
       device: /home/lle-cout/data/wordpress
+
+  portainer_data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/lle-cout/data/portainer
+
+# ---- NETWORKS ---- #
 
 networks:
   inception:

@@ -85,7 +85,7 @@ Here is a non-exhaustive list of the resources that helped me to work on this pr
 - [MariaDB documentation](https://mariadb.com/docs) -> To setup the db
 - [Nginx documentation](https://docs.nginx.com/nginx/admin-guide/basic-functionality/managing-configuration-files/) -> Especially for configuration file
 - Many stackoverflow threads -> mostly for bash scripting quirks
-
+- [This article](https://medium.com/@miteshkokare21/setting-up-nginx-reverse-proxy-for-portainer-c43adcb708d7) helped to setup portainer
 ### AI Usage
 
 I've used AI to help me the following ways:
