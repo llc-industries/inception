@@ -9,6 +9,7 @@ default: all
 # Basic rules
 
 all: env
+	@mkdir -p /home/lle-cout/data
 	@mkdir -p $(DATA_DIR)/wordpress
 	@mkdir -p $(DATA_DIR)/adminer
 	@mkdir -p $(DATA_DIR)/mariadb
@@ -21,7 +22,7 @@ clean:
 	@echo "Containers are down, volumes and network cleaned"
 
 fclean: clean
-# 	@rm -rf $(ENV_FILE)
+	@rm -rf $(ENV_FILE)
 	@sudo rm -rf $(DATA_DIR)/wordpress
 	@sudo rm -rf $(DATA_DIR)/adminer
 	@sudo rm -rf $(DATA_DIR)/mariadb
@@ -33,7 +34,7 @@ re: fclean all
 # Up / Down / Env
 
 up:
-	$(COMPOSE) up -d
+	$(COMPOSE) up --build -d
 	@echo "Containers are up"
 
 down:
@@ -43,5 +44,11 @@ down:
 env:
 	@echo "Calling .env script..."
 	@bash $(ENV_SCRIPT)
+
+cleandocker:
+	-docker stop $$(docker ps -qa)
+	-docker rm $$(docker ps -qa)
+	-docker rmi -f $$(docker images -qa)
+	-docker volume rm $$(docker volume ls -q)
 
 .PHONY: all clean fclean re up down env
